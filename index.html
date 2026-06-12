@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>子役カウンター</title>
+<style>
+body{
+    font-family:sans-serif;
+    text-align:center;
+    padding:20px;
+    max-width:500px;
+    margin:auto;
+}
+button{
+    width:100%;
+    padding:20px;
+    margin:5px 0;
+    font-size:24px;
+}
+.box{
+    border:1px solid #ccc;
+    border-radius:10px;
+    padding:15px;
+    margin:10px 0;
+}
+</style>
+</head>
+<body>
+
+<h1>子役カウンター</h1>
+
+<div class="box">
+<h2>総ゲーム数</h2>
+<div id="game">0</div>
+<button onclick="addGame()">+1G</button>
+</div>
+
+<div class="box">
+<h2>ブドウ</h2>
+<div id="grape">0</div>
+<button onclick="addGrape()">+1</button>
+<div id="grapeRate">1/-</div>
+</div>
+
+<div class="box">
+<h2>チェリー</h2>
+<div id="cherry">0</div>
+<button onclick="addCherry()">+1</button>
+<div id="cherryRate">1/-</div>
+</div>
+
+<button onclick="resetAll()">リセット</button>
+
+<script>
+let game=0;
+let grape=0;
+let cherry=0;
+
+function update(){
+document.getElementById("game").innerText=game;
+document.getElementById("grape").innerText=grape;
+document.getElementById("cherry").innerText=cherry;
+
+document.getElementById("grapeRate").innerText=
+grape>0 ? "1/" + (game/grape).toFixed(1) : "1/-";
+
+document.getElementById("cherryRate").innerText=
+cherry>0 ? "1/" + (game/cherry).toFixed(1) : "1/-";
+}
+
+function addGame(){game++;update();}
+function addGrape(){grape++;update();}
+function addCherry(){cherry++;update();}
+
+function resetAll(){
+game=0;
+grape=0;
+cherry=0;
+update();
+}
+
+update();
+</script>
+
+</body>
+</html>
