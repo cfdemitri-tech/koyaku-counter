@@ -15,9 +15,9 @@ body{
 }
 
 button{
-    width:100%;
+    width:48%;
     padding:20px;
-    margin:5px 0;
+    margin:5px 1%;
     font-size:24px;
 }
 
@@ -37,13 +37,15 @@ button{
 <div class="box">
 <h2>総ゲーム数</h2>
 <div id="game">0</div>
-<button onclick="addGame()">+1G</button>
+<button onclick="addGame()">+1</button>
+<button onclick="subGame()">-1</button>
 </div>
 
 <div class="box">
 <h2>ブドウ</h2>
 <div id="grape">0</div>
 <button onclick="addGrape()">+1</button>
+<button onclick="subGrape()">-1</button>
 <div id="grapeRate">1/-</div>
 </div>
 
@@ -51,10 +53,11 @@ button{
 <h2>チェリー</h2>
 <div id="cherry">0</div>
 <button onclick="addCherry()">+1</button>
+<button onclick="subCherry()">-1</button>
 <div id="cherryRate">1/-</div>
 </div>
 
-<button onclick="resetAll()">リセット</button>
+<button style="width:100%;" onclick="resetAll()">リセット</button>
 
 <script>
 
@@ -64,41 +67,45 @@ let cherry = Number(localStorage.getItem("cherry")) || 0;
 
 function update(){
 
-    document.getElementById("game").innerText = game;
-    document.getElementById("grape").innerText = grape;
-    document.getElementById("cherry").innerText = cherry;
+document.getElementById("game").innerText = game;
+document.getElementById("grape").innerText = grape;
+document.getElementById("cherry").innerText = cherry;
 
-    document.getElementById("grapeRate").innerText =
-        grape > 0 ? "1/" + (game / grape).toFixed(1) : "1/-";
+document.getElementById("grapeRate").innerText =
+grape > 0 ? "1/" + (game / grape).toFixed(1) : "1/-";
 
-    document.getElementById("cherryRate").innerText =
-        cherry > 0 ? "1/" + (game / cherry).toFixed(1) : "1/-";
+document.getElementById("cherryRate").innerText =
+cherry > 0 ? "1/" + (game / cherry).toFixed(1) : "1/-";
 
-    localStorage.setItem("game", game);
-    localStorage.setItem("grape", grape);
-    localStorage.setItem("cherry", cherry);
+localStorage.setItem("game", game);
+localStorage.setItem("grape", grape);
+localStorage.setItem("cherry", cherry);
 }
 
-function addGame(){
-    game++;
-    update();
+function addGame(){ game++; update(); }
+function addGrape(){ grape++; update(); }
+function addCherry(){ cherry++; update(); }
+
+function subGame(){
+if(game>0) game--;
+update();
 }
 
-function addGrape(){
-    grape++;
-    update();
+function subGrape(){
+if(grape>0) grape--;
+update();
 }
 
-function addCherry(){
-    cherry++;
-    update();
+function subCherry(){
+if(cherry>0) cherry--;
+update();
 }
 
 function resetAll(){
-    game = 0;
-    grape = 0;
-    cherry = 0;
-    update();
+game=0;
+grape=0;
+cherry=0;
+update();
 }
 
 update();
