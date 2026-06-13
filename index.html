@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>子役カウンター</title>
+
 <style>
 body{
     font-family:sans-serif;
@@ -12,12 +13,14 @@ body{
     max-width:500px;
     margin:auto;
 }
+
 button{
     width:100%;
     padding:20px;
     margin:5px 0;
     font-size:24px;
 }
+
 .box{
     border:1px solid #ccc;
     border-radius:10px;
@@ -26,6 +29,7 @@ button{
 }
 </style>
 </head>
+
 <body>
 
 <h1>子役カウンター</h1>
@@ -53,34 +57,52 @@ button{
 <button onclick="resetAll()">リセット</button>
 
 <script>
-let game=0;
-let grape=0;
-let cherry=0;
+
+let game = Number(localStorage.getItem("game")) || 0;
+let grape = Number(localStorage.getItem("grape")) || 0;
+let cherry = Number(localStorage.getItem("cherry")) || 0;
 
 function update(){
-document.getElementById("game").innerText=game;
-document.getElementById("grape").innerText=grape;
-document.getElementById("cherry").innerText=cherry;
 
-document.getElementById("grapeRate").innerText=
-grape>0 ? "1/" + (game/grape).toFixed(1) : "1/-";
+    document.getElementById("game").innerText = game;
+    document.getElementById("grape").innerText = grape;
+    document.getElementById("cherry").innerText = cherry;
 
-document.getElementById("cherryRate").innerText=
-cherry>0 ? "1/" + (game/cherry).toFixed(1) : "1/-";
+    document.getElementById("grapeRate").innerText =
+        grape > 0 ? "1/" + (game / grape).toFixed(1) : "1/-";
+
+    document.getElementById("cherryRate").innerText =
+        cherry > 0 ? "1/" + (game / cherry).toFixed(1) : "1/-";
+
+    localStorage.setItem("game", game);
+    localStorage.setItem("grape", grape);
+    localStorage.setItem("cherry", cherry);
 }
 
-function addGame(){game++;update();}
-function addGrape(){grape++;update();}
-function addCherry(){cherry++;update();}
+function addGame(){
+    game++;
+    update();
+}
+
+function addGrape(){
+    grape++;
+    update();
+}
+
+function addCherry(){
+    cherry++;
+    update();
+}
 
 function resetAll(){
-game=0;
-grape=0;
-cherry=0;
-update();
+    game = 0;
+    grape = 0;
+    cherry = 0;
+    update();
 }
 
 update();
+
 </script>
 
 </body>
