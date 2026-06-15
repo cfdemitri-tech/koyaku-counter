@@ -57,6 +57,34 @@ button{
 <div id="cherryRate">1/-</div>
 </div>
 
+<div class="box">
+<h2>単独BIG</h2>
+<div id="soloBig">0</div>
+<button onclick="addSoloBig()">+1</button>
+<button onclick="subSoloBig()">-1</button>
+</div>
+
+<div class="box">
+<h2>チェリーBIG</h2>
+<div id="cherryBig">0</div>
+<button onclick="addCherryBig()">+1</button>
+<button onclick="subCherryBig()">-1</button>
+</div>
+
+<div class="box">
+<h2>単独REG</h2>
+<div id="soloReg">0</div>
+<button onclick="addSoloReg()">+1</button>
+<button onclick="subSoloReg()">-1</button>
+</div>
+
+<div class="box">
+<h2>チェリーREG</h2>
+<div id="cherryReg">0</div>
+<button onclick="addCherryReg()">+1</button>
+<button onclick="subCherryReg()">-1</button>
+</div>
+
 <button style="width:100%;" onclick="resetAll()">リセット</button>
 
 <script>
@@ -65,11 +93,21 @@ let game = Number(localStorage.getItem("game")) || 0;
 let grape = Number(localStorage.getItem("grape")) || 0;
 let cherry = Number(localStorage.getItem("cherry")) || 0;
 
+let soloBig = Number(localStorage.getItem("soloBig")) || 0;
+let cherryBig = Number(localStorage.getItem("cherryBig")) || 0;
+let soloReg = Number(localStorage.getItem("soloReg")) || 0;
+let cherryReg = Number(localStorage.getItem("cherryReg")) || 0;
+
 function update(){
 
 document.getElementById("game").innerText = game;
 document.getElementById("grape").innerText = grape;
 document.getElementById("cherry").innerText = cherry;
+
+document.getElementById("soloBig").innerText = soloBig;
+document.getElementById("cherryBig").innerText = cherryBig;
+document.getElementById("soloReg").innerText = soloReg;
+document.getElementById("cherryReg").innerText = cherryReg;
 
 document.getElementById("grapeRate").innerText =
 grape > 0 ? "1/" + (game / grape).toFixed(1) : "1/-";
@@ -80,31 +118,43 @@ cherry > 0 ? "1/" + (game / cherry).toFixed(1) : "1/-";
 localStorage.setItem("game", game);
 localStorage.setItem("grape", grape);
 localStorage.setItem("cherry", cherry);
+
+localStorage.setItem("soloBig", soloBig);
+localStorage.setItem("cherryBig", cherryBig);
+localStorage.setItem("soloReg", soloReg);
+localStorage.setItem("cherryReg", cherryReg);
+
 }
 
 function addGame(){ game++; update(); }
+function subGame(){ if(game>0) game--; update(); }
+
 function addGrape(){ grape++; update(); }
+function subGrape(){ if(grape>0) grape--; update(); }
+
 function addCherry(){ cherry++; update(); }
+function subCherry(){ if(cherry>0) cherry--; update(); }
 
-function subGame(){
-if(game>0) game--;
-update();
-}
+function addSoloBig(){ soloBig++; update(); }
+function subSoloBig(){ if(soloBig>0) soloBig--; update(); }
 
-function subGrape(){
-if(grape>0) grape--;
-update();
-}
+function addCherryBig(){ cherryBig++; update(); }
+function subCherryBig(){ if(cherryBig>0) cherryBig--; update(); }
 
-function subCherry(){
-if(cherry>0) cherry--;
-update();
-}
+function addSoloReg(){ soloReg++; update(); }
+function subSoloReg(){ if(soloReg>0) soloReg--; update(); }
+
+function addCherryReg(){ cherryReg++; update(); }
+function subCherryReg(){ if(cherryReg>0) cherryReg--; update(); }
 
 function resetAll(){
 game=0;
 grape=0;
 cherry=0;
+soloBig=0;
+cherryBig=0;
+soloReg=0;
+cherryReg=0;
 update();
 }
 
