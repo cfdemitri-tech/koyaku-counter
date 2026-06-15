@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>子役カウンター</title>
+<title>小役カウンター</title>
 
 <style>
 body{
@@ -12,21 +12,29 @@ body{
     padding:10px;
 }
 
-#lamp{
-    position:fixed;
-    top:10px;
-    left:10px;
-    width:20px;
-    height:20px;
-    border-radius:50%;
-    background:#cccccc;
-    z-index:9999;
-}
-
 h1{
     text-align:center;
-    margin:5px 0 10px;
+    margin:5px 0 6px;
     font-size:24px;
+}
+
+#lampLine{
+    width:100%;
+    height:4px;
+    background:#cccccc;
+    margin:0 auto 10px;
+    border-radius:2px;
+    overflow:hidden;
+    position:relative;
+}
+
+#lampFill{
+    position:absolute;
+    left:0;
+    top:0;
+    height:100%;
+    width:0%;
+    background:#00ff00;
 }
 
 .container{
@@ -49,13 +57,8 @@ h1{
     font-size:16px;
 }
 
-.grape{
-    color:#00aa00;
-}
-
-.cherry{
-    color:#ff0000;
-}
+.grape{ color:#00aa00; }
+.cherry{ color:#ff0000; }
 
 .value{
     width:60px;
@@ -88,9 +91,8 @@ button{
 
 <body>
 
-<div id="lamp"></div>
-
-<h1>子役カウンター</h1>
+<h1>小役カウンター</h1>
+<div id="lampLine"><div id="lampFill"></div></div>
 
 <div class="container">
 
@@ -185,7 +187,6 @@ let cherry = Number(localStorage.getItem("cherry")) || 0;
 
 let bell = Number(localStorage.getItem("bell")) || 0;
 let missBell = Number(localStorage.getItem("missBell")) || 0;
-
 let pierrot = Number(localStorage.getItem("pierrot")) || 0;
 let missPierrot = Number(localStorage.getItem("missPierrot")) || 0;
 
@@ -194,13 +195,14 @@ let cherryBig = Number(localStorage.getItem("cherryBig")) || 0;
 let soloReg = Number(localStorage.getItem("soloReg")) || 0;
 let cherryReg = Number(localStorage.getItem("cherryReg")) || 0;
 
-function flashLamp(color){
-    const lamp = document.getElementById("lamp");
-    lamp.style.background = color;
+function flashLine(color){
+    const fill = document.getElementById("lampFill");
+    fill.style.background = color;
+    fill.style.width = "100%";
 
     setTimeout(()=>{
-        lamp.style.background = "#cccccc";
-    },500);
+        fill.style.width = "0%";
+    }, 500);
 }
 
 function update(){
@@ -211,7 +213,6 @@ document.getElementById("cherry").value = cherry;
 
 document.getElementById("bell").value = bell;
 document.getElementById("missBell").value = missBell;
-
 document.getElementById("pierrot").value = pierrot;
 document.getElementById("missPierrot").value = missPierrot;
 
@@ -229,13 +230,10 @@ cherry > 0 ? "1/" + (game/cherry).toFixed(1) : "1/-";
 localStorage.setItem("game", game);
 localStorage.setItem("grape", grape);
 localStorage.setItem("cherry", cherry);
-
 localStorage.setItem("bell", bell);
 localStorage.setItem("missBell", missBell);
-
 localStorage.setItem("pierrot", pierrot);
 localStorage.setItem("missPierrot", missPierrot);
-
 localStorage.setItem("soloBig", soloBig);
 localStorage.setItem("cherryBig", cherryBig);
 localStorage.setItem("soloReg", soloReg);
@@ -246,55 +244,51 @@ function syncInputs(){
 game = Number(document.getElementById("game").value) || 0;
 grape = Number(document.getElementById("grape").value) || 0;
 cherry = Number(document.getElementById("cherry").value) || 0;
-
 bell = Number(document.getElementById("bell").value) || 0;
 missBell = Number(document.getElementById("missBell").value) || 0;
-
 pierrot = Number(document.getElementById("pierrot").value) || 0;
 missPierrot = Number(document.getElementById("missPierrot").value) || 0;
-
 soloBig = Number(document.getElementById("soloBig").value) || 0;
 cherryBig = Number(document.getElementById("cherryBig").value) || 0;
 soloReg = Number(document.getElementById("soloReg").value) || 0;
 cherryReg = Number(document.getElementById("cherryReg").value) || 0;
-
 update();
 }
 
 document.addEventListener("input", syncInputs);
 
-function addGame(){ game++; update(); flashLamp("#00ff00"); }
-function subGame(){ if(game>0) game--; update(); flashLamp("#ff0000"); }
+function addGame(){ game++; update(); flashLine("#00ff00"); }
+function subGame(){ if(game>0) game--; update(); flashLine("#ff0000"); }
 
-function addGrape(){ grape++; update(); flashLamp("#00ff00"); }
-function subGrape(){ if(grape>0) grape--; update(); flashLamp("#ff0000"); }
+function addGrape(){ grape++; update(); flashLine("#00ff00"); }
+function subGrape(){ if(grape>0) grape--; update(); flashLine("#ff0000"); }
 
-function addCherry(){ cherry++; update(); flashLamp("#00ff00"); }
-function subCherry(){ if(cherry>0) cherry--; update(); flashLamp("#ff0000"); }
+function addCherry(){ cherry++; update(); flashLine("#00ff00"); }
+function subCherry(){ if(cherry>0) cherry--; update(); flashLine("#ff0000"); }
 
-function addBell(){ bell++; update(); flashLamp("#00ff00"); }
-function subBell(){ if(bell>0) bell--; update(); flashLamp("#ff0000"); }
+function addBell(){ bell++; update(); flashLine("#00ff00"); }
+function subBell(){ if(bell>0) bell--; update(); flashLine("#ff0000"); }
 
-function addMissBell(){ missBell++; update(); flashLamp("#00ff00"); }
-function subMissBell(){ if(missBell>0) missBell--; update(); flashLamp("#ff0000"); }
+function addMissBell(){ missBell++; update(); flashLine("#00ff00"); }
+function subMissBell(){ if(missBell>0) missBell--; update(); flashLine("#ff0000"); }
 
-function addPierrot(){ pierrot++; update(); flashLamp("#00ff00"); }
-function subPierrot(){ if(pierrot>0) pierrot--; update(); flashLamp("#ff0000"); }
+function addPierrot(){ pierrot++; update(); flashLine("#00ff00"); }
+function subPierrot(){ if(pierrot>0) pierrot--; update(); flashLine("#ff0000"); }
 
-function addMissPierrot(){ missPierrot++; update(); flashLamp("#00ff00"); }
-function subMissPierrot(){ if(missPierrot>0) missPierrot--; update(); flashLamp("#ff0000"); }
+function addMissPierrot(){ missPierrot++; update(); flashLine("#00ff00"); }
+function subMissPierrot(){ if(missPierrot>0) missPierrot--; update(); flashLine("#ff0000"); }
 
-function addSoloBig(){ soloBig++; update(); flashLamp("#00ff00"); }
-function subSoloBig(){ if(soloBig>0) soloBig--; update(); flashLamp("#ff0000"); }
+function addSoloBig(){ soloBig++; update(); flashLine("#00ff00"); }
+function subSoloBig(){ if(soloBig>0) soloBig--; update(); flashLine("#ff0000"); }
 
-function addCherryBig(){ cherryBig++; update(); flashLamp("#00ff00"); }
-function subCherryBig(){ if(cherryBig>0) cherryBig--; update(); flashLamp("#ff0000"); }
+function addCherryBig(){ cherryBig++; update(); flashLine("#00ff00"); }
+function subCherryBig(){ if(cherryBig>0) cherryBig--; update(); flashLine("#ff0000"); }
 
-function addSoloReg(){ soloReg++; update(); flashLamp("#00ff00"); }
-function subSoloReg(){ if(soloReg>0) soloReg--; update(); flashLamp("#ff0000"); }
+function addSoloReg(){ soloReg++; update(); flashLine("#00ff00"); }
+function subSoloReg(){ if(soloReg>0) soloReg--; update(); flashLine("#ff0000"); }
 
-function addCherryReg(){ cherryReg++; update(); flashLamp("#00ff00"); }
-function subCherryReg(){ if(cherryReg>0) cherryReg--; update(); flashLamp("#ff0000"); }
+function addCherryReg(){ cherryReg++; update(); flashLine("#00ff00"); }
+function subCherryReg(){ if(cherryReg>0) cherryReg--; update(); flashLine("#ff0000"); }
 
 function resetAll(){
 game=0;
