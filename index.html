@@ -33,15 +33,26 @@ h1{
 }
 
 .label{
-    width:80px;
+    width:90px;
     font-weight:bold;
     font-size:16px;
 }
 
+.grape{
+    color:#00aa00;
+}
+
+.cherry{
+    color:#ff0000;
+}
+
 .value{
-    width:50px;
+    width:60px;
     text-align:center;
     font-size:20px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    padding:3px;
 }
 
 .rate{
@@ -61,19 +72,6 @@ button{
     height:50px;
     margin-top:10px;
 }
-
-@media (orientation: landscape){
-
-    .container{
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:8px 20px;
-    }
-
-    .reset{
-        grid-column:1 / -1;
-    }
-}
 </style>
 </head>
 
@@ -85,51 +83,79 @@ button{
 
 <div class="row">
 <div class="label">総G</div>
-<div id="game" class="value">0</div>
+<input id="game" class="value" type="number">
 <button onclick="addGame()">+</button>
 <button onclick="subGame()">-</button>
 </div>
 
 <div class="row">
-<div class="label">ブドウ</div>
-<div id="grape" class="value">0</div>
+<div class="label grape">ブドウ</div>
+<input id="grape" class="value" type="number">
 <button onclick="addGrape()">+</button>
 <button onclick="subGrape()">-</button>
 <div id="grapeRate" class="rate">1/-</div>
 </div>
 
 <div class="row">
-<div class="label">チェリー</div>
-<div id="cherry" class="value">0</div>
+<div class="label cherry">チェリー</div>
+<input id="cherry" class="value" type="number">
 <button onclick="addCherry()">+</button>
 <button onclick="subCherry()">-</button>
 <div id="cherryRate" class="rate">1/-</div>
 </div>
 
 <div class="row">
+<div class="label">ベル</div>
+<input id="bell" class="value" type="number">
+<button onclick="addBell()">+</button>
+<button onclick="subBell()">-</button>
+</div>
+
+<div class="row">
+<div class="label">ベルこぼし</div>
+<input id="missBell" class="value" type="number">
+<button onclick="addMissBell()">+</button>
+<button onclick="subMissBell()">-</button>
+</div>
+
+<div class="row">
+<div class="label">ピエロ</div>
+<input id="pierrot" class="value" type="number">
+<button onclick="addPierrot()">+</button>
+<button onclick="subPierrot()">-</button>
+</div>
+
+<div class="row">
+<div class="label">ピエロこぼし</div>
+<input id="missPierrot" class="value" type="number">
+<button onclick="addMissPierrot()">+</button>
+<button onclick="subMissPierrot()">-</button>
+</div>
+
+<div class="row">
 <div class="label">単独BIG</div>
-<div id="soloBig" class="value">0</div>
+<input id="soloBig" class="value" type="number">
 <button onclick="addSoloBig()">+</button>
 <button onclick="subSoloBig()">-</button>
 </div>
 
 <div class="row">
 <div class="label">チェBIG</div>
-<div id="cherryBig" class="value">0</div>
+<input id="cherryBig" class="value" type="number">
 <button onclick="addCherryBig()">+</button>
 <button onclick="subCherryBig()">-</button>
 </div>
 
 <div class="row">
 <div class="label">単独REG</div>
-<div id="soloReg" class="value">0</div>
+<input id="soloReg" class="value" type="number">
 <button onclick="addSoloReg()">+</button>
 <button onclick="subSoloReg()">-</button>
 </div>
 
 <div class="row">
 <div class="label">チェREG</div>
-<div id="cherryReg" class="value">0</div>
+<input id="cherryReg" class="value" type="number">
 <button onclick="addCherryReg()">+</button>
 <button onclick="subCherryReg()">-</button>
 </div>
@@ -144,6 +170,12 @@ let game = Number(localStorage.getItem("game")) || 0;
 let grape = Number(localStorage.getItem("grape")) || 0;
 let cherry = Number(localStorage.getItem("cherry")) || 0;
 
+let bell = Number(localStorage.getItem("bell")) || 0;
+let missBell = Number(localStorage.getItem("missBell")) || 0;
+
+let pierrot = Number(localStorage.getItem("pierrot")) || 0;
+let missPierrot = Number(localStorage.getItem("missPierrot")) || 0;
+
 let soloBig = Number(localStorage.getItem("soloBig")) || 0;
 let cherryBig = Number(localStorage.getItem("cherryBig")) || 0;
 let soloReg = Number(localStorage.getItem("soloReg")) || 0;
@@ -151,14 +183,20 @@ let cherryReg = Number(localStorage.getItem("cherryReg")) || 0;
 
 function update(){
 
-document.getElementById("game").innerText = game;
-document.getElementById("grape").innerText = grape;
-document.getElementById("cherry").innerText = cherry;
+document.getElementById("game").value = game;
+document.getElementById("grape").value = grape;
+document.getElementById("cherry").value = cherry;
 
-document.getElementById("soloBig").innerText = soloBig;
-document.getElementById("cherryBig").innerText = cherryBig;
-document.getElementById("soloReg").innerText = soloReg;
-document.getElementById("cherryReg").innerText = cherryReg;
+document.getElementById("bell").value = bell;
+document.getElementById("missBell").value = missBell;
+
+document.getElementById("pierrot").value = pierrot;
+document.getElementById("missPierrot").value = missPierrot;
+
+document.getElementById("soloBig").value = soloBig;
+document.getElementById("cherryBig").value = cherryBig;
+document.getElementById("soloReg").value = soloReg;
+document.getElementById("cherryReg").value = cherryReg;
 
 document.getElementById("grapeRate").innerText =
 grape > 0 ? "1/" + (game/grape).toFixed(1) : "1/-";
@@ -170,12 +208,38 @@ localStorage.setItem("game", game);
 localStorage.setItem("grape", grape);
 localStorage.setItem("cherry", cherry);
 
+localStorage.setItem("bell", bell);
+localStorage.setItem("missBell", missBell);
+
+localStorage.setItem("pierrot", pierrot);
+localStorage.setItem("missPierrot", missPierrot);
+
 localStorage.setItem("soloBig", soloBig);
 localStorage.setItem("cherryBig", cherryBig);
 localStorage.setItem("soloReg", soloReg);
 localStorage.setItem("cherryReg", cherryReg);
-
 }
+
+function syncInputs(){
+game = Number(document.getElementById("game").value) || 0;
+grape = Number(document.getElementById("grape").value) || 0;
+cherry = Number(document.getElementById("cherry").value) || 0;
+
+bell = Number(document.getElementById("bell").value) || 0;
+missBell = Number(document.getElementById("missBell").value) || 0;
+
+pierrot = Number(document.getElementById("pierrot").value) || 0;
+missPierrot = Number(document.getElementById("missPierrot").value) || 0;
+
+soloBig = Number(document.getElementById("soloBig").value) || 0;
+cherryBig = Number(document.getElementById("cherryBig").value) || 0;
+soloReg = Number(document.getElementById("soloReg").value) || 0;
+cherryReg = Number(document.getElementById("cherryReg").value) || 0;
+
+update();
+}
+
+document.addEventListener("input", syncInputs);
 
 function addGame(){ game++; update(); }
 function subGame(){ if(game>0) game--; update(); }
@@ -185,6 +249,18 @@ function subGrape(){ if(grape>0) grape--; update(); }
 
 function addCherry(){ cherry++; update(); }
 function subCherry(){ if(cherry>0) cherry--; update(); }
+
+function addBell(){ bell++; update(); }
+function subBell(){ if(bell>0) bell--; update(); }
+
+function addMissBell(){ missBell++; update(); }
+function subMissBell(){ if(missBell>0) missBell--; update(); }
+
+function addPierrot(){ pierrot++; update(); }
+function subPierrot(){ if(pierrot>0) pierrot--; update(); }
+
+function addMissPierrot(){ missPierrot++; update(); }
+function subMissPierrot(){ if(missPierrot>0) missPierrot--; update(); }
 
 function addSoloBig(){ soloBig++; update(); }
 function subSoloBig(){ if(soloBig>0) soloBig--; update(); }
@@ -202,6 +278,10 @@ function resetAll(){
 game=0;
 grape=0;
 cherry=0;
+bell=0;
+missBell=0;
+pierrot=0;
+missPierrot=0;
 soloBig=0;
 cherryBig=0;
 soloReg=0;
