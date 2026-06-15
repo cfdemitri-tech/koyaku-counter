@@ -12,6 +12,17 @@ body{
     padding:10px;
 }
 
+#lamp{
+    position:fixed;
+    top:10px;
+    left:10px;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:#cccccc;
+    z-index:9999;
+}
+
 h1{
     text-align:center;
     margin:5px 0 10px;
@@ -76,6 +87,8 @@ button{
 </head>
 
 <body>
+
+<div id="lamp"></div>
 
 <h1>子役カウンター</h1>
 
@@ -181,6 +194,15 @@ let cherryBig = Number(localStorage.getItem("cherryBig")) || 0;
 let soloReg = Number(localStorage.getItem("soloReg")) || 0;
 let cherryReg = Number(localStorage.getItem("cherryReg")) || 0;
 
+function flashLamp(color){
+    const lamp = document.getElementById("lamp");
+    lamp.style.background = color;
+
+    setTimeout(()=>{
+        lamp.style.background = "#cccccc";
+    },500);
+}
+
 function update(){
 
 document.getElementById("game").value = game;
@@ -241,38 +263,38 @@ update();
 
 document.addEventListener("input", syncInputs);
 
-function addGame(){ game++; update(); }
-function subGame(){ if(game>0) game--; update(); }
+function addGame(){ game++; update(); flashLamp("#00ff00"); }
+function subGame(){ if(game>0) game--; update(); flashLamp("#ff0000"); }
 
-function addGrape(){ grape++; update(); }
-function subGrape(){ if(grape>0) grape--; update(); }
+function addGrape(){ grape++; update(); flashLamp("#00ff00"); }
+function subGrape(){ if(grape>0) grape--; update(); flashLamp("#ff0000"); }
 
-function addCherry(){ cherry++; update(); }
-function subCherry(){ if(cherry>0) cherry--; update(); }
+function addCherry(){ cherry++; update(); flashLamp("#00ff00"); }
+function subCherry(){ if(cherry>0) cherry--; update(); flashLamp("#ff0000"); }
 
-function addBell(){ bell++; update(); }
-function subBell(){ if(bell>0) bell--; update(); }
+function addBell(){ bell++; update(); flashLamp("#00ff00"); }
+function subBell(){ if(bell>0) bell--; update(); flashLamp("#ff0000"); }
 
-function addMissBell(){ missBell++; update(); }
-function subMissBell(){ if(missBell>0) missBell--; update(); }
+function addMissBell(){ missBell++; update(); flashLamp("#00ff00"); }
+function subMissBell(){ if(missBell>0) missBell--; update(); flashLamp("#ff0000"); }
 
-function addPierrot(){ pierrot++; update(); }
-function subPierrot(){ if(pierrot>0) pierrot--; update(); }
+function addPierrot(){ pierrot++; update(); flashLamp("#00ff00"); }
+function subPierrot(){ if(pierrot>0) pierrot--; update(); flashLamp("#ff0000"); }
 
-function addMissPierrot(){ missPierrot++; update(); }
-function subMissPierrot(){ if(missPierrot>0) missPierrot--; update(); }
+function addMissPierrot(){ missPierrot++; update(); flashLamp("#00ff00"); }
+function subMissPierrot(){ if(missPierrot>0) missPierrot--; update(); flashLamp("#ff0000"); }
 
-function addSoloBig(){ soloBig++; update(); }
-function subSoloBig(){ if(soloBig>0) soloBig--; update(); }
+function addSoloBig(){ soloBig++; update(); flashLamp("#00ff00"); }
+function subSoloBig(){ if(soloBig>0) soloBig--; update(); flashLamp("#ff0000"); }
 
-function addCherryBig(){ cherryBig++; update(); }
-function subCherryBig(){ if(cherryBig>0) cherryBig--; update(); }
+function addCherryBig(){ cherryBig++; update(); flashLamp("#00ff00"); }
+function subCherryBig(){ if(cherryBig>0) cherryBig--; update(); flashLamp("#ff0000"); }
 
-function addSoloReg(){ soloReg++; update(); }
-function subSoloReg(){ if(soloReg>0) soloReg--; update(); }
+function addSoloReg(){ soloReg++; update(); flashLamp("#00ff00"); }
+function subSoloReg(){ if(soloReg>0) soloReg--; update(); flashLamp("#ff0000"); }
 
-function addCherryReg(){ cherryReg++; update(); }
-function subCherryReg(){ if(cherryReg>0) cherryReg--; update(); }
+function addCherryReg(){ cherryReg++; update(); flashLamp("#00ff00"); }
+function subCherryReg(){ if(cherryReg>0) cherryReg--; update(); flashLamp("#ff0000"); }
 
 function resetAll(){
 game=0;
