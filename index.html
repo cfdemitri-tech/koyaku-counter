@@ -8,28 +8,34 @@
 <style>
 body{
     font-family:sans-serif;
-    max-width:500px;
-    margin:auto;
+    margin:0;
     padding:10px;
 }
 
 h1{
     text-align:center;
-    margin:10px 0;
+    margin:5px 0 10px;
     font-size:24px;
+}
+
+.container{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
 }
 
 .row{
     display:flex;
     align-items:center;
     gap:5px;
-    padding:6px 0;
+    padding:4px 0;
     border-bottom:1px solid #ddd;
 }
 
 .label{
-    width:90px;
+    width:80px;
     font-weight:bold;
+    font-size:16px;
 }
 
 .value{
@@ -45,9 +51,9 @@ h1{
 }
 
 button{
-    width:40px;
-    height:40px;
-    font-size:20px;
+    width:42px;
+    height:42px;
+    font-size:22px;
 }
 
 .reset{
@@ -55,12 +61,27 @@ button{
     height:50px;
     margin-top:10px;
 }
+
+@media (orientation: landscape){
+
+    .container{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:8px 20px;
+    }
+
+    .reset{
+        grid-column:1 / -1;
+    }
+}
 </style>
 </head>
 
 <body>
 
 <h1>子役カウンター</h1>
+
+<div class="container">
 
 <div class="row">
 <div class="label">総G</div>
@@ -114,6 +135,8 @@ button{
 </div>
 
 <button class="reset" onclick="resetAll()">リセット</button>
+
+</div>
 
 <script>
 
