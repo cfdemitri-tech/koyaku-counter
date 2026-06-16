@@ -219,6 +219,17 @@ let battleMode =
 localStorage.getItem("battleMode") === "true";
 function toggleBattle(){
     battleMode = !battleMode;
+
+    document.getElementById("battleToggle").innerText =
+    battleMode ?
+    "設定6バトル ON" :
+    "設定6バトル OFF";
+
+    localStorage.setItem(
+    "battleMode",
+    battleMode
+    );
+
     update();
 }
 
@@ -280,7 +291,6 @@ localStorage.setItem("soloBig", soloBig);
 localStorage.setItem("cherryBig", cherryBig);
 localStorage.setItem("soloReg", soloReg);
 localStorage.setItem("cherryReg", cherryReg);
-}
 document.getElementById("battleToggle").innerText =
 battleMode ?
 "設定6バトル ON" :
@@ -290,6 +300,9 @@ localStorage.setItem(
 "battleMode",
 battleMode
 );
+}
+
+
 document.addEventListener("input", ()=>{
 game = Number(gameInput()) || 0;
 });
