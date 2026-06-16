@@ -74,16 +74,46 @@ button{
     box-shadow:0 0 0 3px #00ff00;
 }
 
-.flash-red{
+
+    .flash-red{
     box-shadow:0 0 0 3px #ff0000;
 }
+
+#battleLamp{
+    position:fixed;
+    top:10px;
+    right:10px;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background:#ccc;
+    border:2px solid #888;
+}
+
+#battleLamp.on{
+    background:#ffeb3b;
+    box-shadow:0 0 20px #ffeb3b;
+}
+
+#battleToggle{
+    width:100%;
+    height:40px;
+    margin-bottom:10px;
+}
+
 </style>
+
 </head>
 
 <body>
 
 <h1>小役カウンター</h1>
+    
+<div id="battleLamp"></div>
 
+<button id="battleToggle" onclick="toggleBattle()">
+設定6バトル OFF
+</button>
 <div class="container">
 
 <div class="row">
@@ -184,7 +214,30 @@ let soloBig = Number(localStorage.getItem("soloBig")) || 0;
 let cherryBig = Number(localStorage.getItem("cherryBig")) || 0;
 let soloReg = Number(localStorage.getItem("soloReg")) || 0;
 let cherryReg = Number(localStorage.getItem("cherryReg")) || 0;
+    
+let battleMode =
+localStorage.getItem("battleMode") === "true";
+function toggleBattle(){
+    battleMode = !battleMode;
+    update();
+}
 
+function battleCheck(){
+
+    if(!battleMode) return;
+
+    if(Math.floor(Math.random() * 119) === 0){
+
+        const lamp =
+        document.getElementById("battleLamp");
+
+        lamp.classList.add("on");
+
+        setTimeout(()=>{
+            lamp.classList.remove("on");
+        },1000);
+    }
+}    
 function flashInput(id, type){
     const el = document.getElementById(id);
     el.classList.add(type);
@@ -228,7 +281,15 @@ localStorage.setItem("cherryBig", cherryBig);
 localStorage.setItem("soloReg", soloReg);
 localStorage.setItem("cherryReg", cherryReg);
 }
+document.getElementById("battleToggle").innerText =
+battleMode ?
+"設定6バトル ON" :
+"設定6バトル OFF";
 
+localStorage.setItem(
+"battleMode",
+battleMode
+);
 document.addEventListener("input", ()=>{
 game = Number(gameInput()) || 0;
 });
@@ -240,34 +301,34 @@ return document.getElementById("game").value;
 function addGame(){ game++; update(); flashInput("game","flash-green"); }
 function subGame(){ if(game>0) game--; update(); flashInput("game","flash-red"); }
 
-function addGrape(){ grape++; update(); flashInput("grape","flash-green"); }
+function addGrape(){ grape++; update(); flashInput("grape","flash-green"); battleCheck(); }
 function subGrape(){ if(grape>0) grape--; update(); flashInput("grape","flash-red"); }
 
-function addCherry(){ cherry++; update(); flashInput("cherry","flash-green"); }
+function addCherry(){ cherry++; update(); flashInput("cherry","flash-green"); battleCheck(); }
 function subCherry(){ if(cherry>0) cherry--; update(); flashInput("cherry","flash-red"); }
 
-function addBell(){ bell++; update(); flashInput("bell","flash-green"); }
+function addBell(){ bell++; update(); flashInput("bell","flash-green"); battleCheck(); }
 function subBell(){ if(bell>0) bell--; update(); flashInput("bell","flash-red"); }
 
-function addMissBell(){ missBell++; update(); flashInput("missBell","flash-green"); }
+function addMissBell(){ missBell++; update(); flashInput("missBell","flash-green"); battleCheck(); }
 function subMissBell(){ if(missBell>0) missBell--; update(); flashInput("missBell","flash-red"); }
 
-function addPierrot(){ pierrot++; update(); flashInput("pierrot","flash-green"); }
+function addPierrot(){ pierrot++; update(); flashInput("pierrot","flash-green"); battleCheck(); }
 function subPierrot(){ if(pierrot>0) pierrot--; update(); flashInput("pierrot","flash-red"); }
 
-function addMissPierrot(){ missPierrot++; update(); flashInput("missPierrot","flash-green"); }
+function addMissPierrot(){ missPierrot++; update(); flashInput("missPierrot","flash-green"); battleCheck(); }
 function subMissPierrot(){ if(missPierrot>0) missPierrot--; update(); flashInput("missPierrot","flash-red"); }
 
-function addSoloBig(){ soloBig++; update(); flashInput("soloBig","flash-green"); }
+function addSoloBig(){ soloBig++; update(); flashInput("soloBig","flash-green"); battleCheck(); }
 function subSoloBig(){ if(soloBig>0) soloBig--; update(); flashInput("soloBig","flash-red"); }
 
-function addCherryBig(){ cherryBig++; update(); flashInput("cherryBig","flash-green"); }
+function addCherryBig(){ cherryBig++; update(); flashInput("cherryBig","flash-green"); battleCheck(); }
 function subCherryBig(){ if(cherryBig>0) cherryBig--; update(); flashInput("cherryBig","flash-red"); }
 
-function addSoloReg(){ soloReg++; update(); flashInput("soloReg","flash-green"); }
+function addSoloReg(){ soloReg++; update(); flashInput("soloReg","flash-green"); battleCheck(); }
 function subSoloReg(){ if(soloReg>0) soloReg--; update(); flashInput("soloReg","flash-red"); }
 
-function addCherryReg(){ cherryReg++; update(); flashInput("cherryReg","flash-green"); }
+function addCherryReg(){ cherryReg++; update(); flashInput("cherryReg","flash-green"); battleCheck(); }
 function subCherryReg(){ if(cherryReg>0) cherryReg--; update(); flashInput("cherryReg","flash-red"); }
 
 function resetAll(){
