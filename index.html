@@ -48,7 +48,6 @@ h1{
     border:1px solid #ccc;
     border-radius:5px;
     padding:3px;
-    transition:0.15s;
 }
 
 .rate{
@@ -69,15 +68,8 @@ button{
     margin-top:10px;
 }
 
-/* 点滅用 */
-.flash-green{
-    box-shadow:0 0 0 3px #00ff00;
-}
-
-
-    .flash-red{
-    box-shadow:0 0 0 3px #ff0000;
-}
+.flash-green{ box-shadow:0 0 0 3px #00ff00; }
+.flash-red{ box-shadow:0 0 0 3px #ff0000; }
 
 #battleLamp{
     position:fixed;
@@ -100,267 +92,168 @@ button{
     height:40px;
     margin-bottom:10px;
 }
-
 </style>
-
 </head>
 
 <body>
 
 <h1>小役カウンター</h1>
-    
-<div id="battleLamp"></div>
 
-<button id="battleToggle" onclick="toggleBattle()">
-設定6バトル OFF
-</button>
+<div id="battleLamp"></div>
+<button id="battleToggle" onclick="toggleBattle()">設定6バトル OFF</button>
+
 <div class="container">
 
 <div class="row">
 <div class="label">総G</div>
 <input id="game" class="value" type="number">
-<button onclick="addGame()">+</button>
-<button onclick="subGame()">-</button>
+<button onclick="add('game')">+</button>
+<button onclick="sub('game')">-</button>
 </div>
 
 <div class="row">
 <div class="label grape">ブドウ</div>
 <input id="grape" class="value" type="number">
-<button onclick="addGrape()">+</button>
-<button onclick="subGrape()">-</button>
+<button onclick="add('grape')">+</button>
+<button onclick="sub('grape')">-</button>
 <div id="grapeRate" class="rate">1/-</div>
 </div>
 
 <div class="row">
 <div class="label cherry">チェリー</div>
 <input id="cherry" class="value" type="number">
-<button onclick="addCherry()">+</button>
-<button onclick="subCherry()">-</button>
+<button onclick="add('cherry')">+</button>
+<button onclick="sub('cherry')">-</button>
 <div id="cherryRate" class="rate">1/-</div>
 </div>
 
-<div class="row">
-<div class="label">ベル</div>
+<div class="row"><div class="label">ベル</div>
 <input id="bell" class="value" type="number">
-<button onclick="addBell()">+</button>
-<button onclick="subBell()">-</button>
-</div>
+<button onclick="add('bell')">+</button>
+<button onclick="sub('bell')">-</button></div>
 
-<div class="row">
-<div class="label">ベルこぼし</div>
+<div class="row"><div class="label">ベルこぼし</div>
 <input id="missBell" class="value" type="number">
-<button onclick="addMissBell()">+</button>
-<button onclick="subMissBell()">-</button>
-</div>
+<button onclick="add('missBell')">+</button>
+<button onclick="sub('missBell')">-</button></div>
 
-<div class="row">
-<div class="label">ピエロ</div>
+<div class="row"><div class="label">ピエロ</div>
 <input id="pierrot" class="value" type="number">
-<button onclick="addPierrot()">+</button>
-<button onclick="subPierrot()">-</button>
-</div>
+<button onclick="add('pierrot')">+</button>
+<button onclick="sub('pierrot')">-</button></div>
 
-<div class="row">
-<div class="label">ピエロこぼし</div>
+<div class="row"><div class="label">ピエロこぼし</div>
 <input id="missPierrot" class="value" type="number">
-<button onclick="addMissPierrot()">+</button>
-<button onclick="subMissPierrot()">-</button>
-</div>
+<button onclick="add('missPierrot')">+</button>
+<button onclick="sub('missPierrot')">-</button></div>
 
-<div class="row">
-<div class="label">単独BIG</div>
+<div class="row"><div class="label">単独BIG</div>
 <input id="soloBig" class="value" type="number">
-<button onclick="addSoloBig()">+</button>
-<button onclick="subSoloBig()">-</button>
-</div>
+<button onclick="add('soloBig')">+</button>
+<button onclick="sub('soloBig')">-</button></div>
 
-<div class="row">
-<div class="label">チェBIG</div>
+<div class="row"><div class="label">チェBIG</div>
 <input id="cherryBig" class="value" type="number">
-<button onclick="addCherryBig()">+</button>
-<button onclick="subCherryBig()">-</button>
-</div>
+<button onclick="add('cherryBig')">+</button>
+<button onclick="sub('cherryBig')">-</button></div>
 
-<div class="row">
-<div class="label">単独REG</div>
+<div class="row"><div class="label">単独REG</div>
 <input id="soloReg" class="value" type="number">
-<button onclick="addSoloReg()">+</button>
-<button onclick="subSoloReg()">-</button>
-</div>
+<button onclick="add('soloReg')">+</button>
+<button onclick="sub('soloReg')">-</button></div>
 
-<div class="row">
-<div class="label">チェREG</div>
+<div class="row"><div class="label">チェREG</div>
 <input id="cherryReg" class="value" type="number">
-<button onclick="addCherryReg()">+</button>
-<button onclick="subCherryReg()">-</button>
-</div>
+<button onclick="add('cherryReg')">+</button>
+<button onclick="sub('cherryReg')">-</button></div>
 
 <button class="reset" onclick="resetAll()">リセット</button>
 
 </div>
 
 <script>
+const keys = [
+"game","grape","cherry","bell","missBell","pierrot","missPierrot",
+"soloBig","cherryBig","soloReg","cherryReg"
+];
 
-let game = Number(localStorage.getItem("game")) || 0;
-let grape = Number(localStorage.getItem("grape")) || 0;
-let cherry = Number(localStorage.getItem("cherry")) || 0;
+let state = {
+game:0, grape:0, cherry:0,
+bell:0, missBell:0, pierrot:0, missPierrot:0,
+soloBig:0, cherryBig:0, soloReg:0, cherryReg:0,
+battleMode:false
+};
 
-let bell = Number(localStorage.getItem("bell")) || 0;
-let missBell = Number(localStorage.getItem("missBell")) || 0;
-let pierrot = Number(localStorage.getItem("pierrot")) || 0;
-let missPierrot = Number(localStorage.getItem("missPierrot")) || 0;
+// load
+keys.forEach(k=>{
+state[k] = Number(localStorage.getItem(k)) || 0;
+});
+state.battleMode = localStorage.getItem("battleMode") === "true";
 
-let soloBig = Number(localStorage.getItem("soloBig")) || 0;
-let cherryBig = Number(localStorage.getItem("cherryBig")) || 0;
-let soloReg = Number(localStorage.getItem("soloReg")) || 0;
-let cherryReg = Number(localStorage.getItem("cherryReg")) || 0;
-    
-let battleMode =
-localStorage.getItem("battleMode") === "true";
-function toggleBattle(){
-    battleMode = !battleMode;
-
-    document.getElementById("battleToggle").innerText =
-    battleMode ?
-    "設定6バトル ON" :
-    "設定6バトル OFF";
-
-    localStorage.setItem(
-    "battleMode",
-    battleMode
-    );
-
-    update();
+function save(){
+keys.forEach(k=>{
+localStorage.setItem(k,state[k]);
+});
+localStorage.setItem("battleMode",state.battleMode);
 }
 
-function battleCheck(){
-
-    if(!battleMode) return;
-
-    if(Math.floor(Math.random() * 119) === 0){
-
-        const lamp =
-        document.getElementById("battleLamp");
-
-        lamp.classList.add("on");
-
-        setTimeout(()=>{
-            lamp.classList.remove("on");
-        },1000);
-    }
-}    
-function flashInput(id, type){
-    const el = document.getElementById(id);
-    el.classList.add(type);
-
-    setTimeout(()=>{
-        el.classList.remove(type);
-    }, 400);
+function flash(id,type){
+const el=document.getElementById(id);
+el.classList.add(type);
+setTimeout(()=>el.classList.remove(type),300);
 }
 
 function update(){
 
-document.getElementById("game").value = game;
-document.getElementById("grape").value = grape;
-document.getElementById("cherry").value = cherry;
-
-document.getElementById("bell").value = bell;
-document.getElementById("missBell").value = missBell;
-document.getElementById("pierrot").value = pierrot;
-document.getElementById("missPierrot").value = missPierrot;
-
-document.getElementById("soloBig").value = soloBig;
-document.getElementById("cherryBig").value = cherryBig;
-document.getElementById("soloReg").value = soloReg;
-document.getElementById("cherryReg").value = cherryReg;
-
-document.getElementById("grapeRate").innerText =
-grape > 0 ? "1/" + (game/grape).toFixed(1) : "1/-";
-
-document.getElementById("cherryRate").innerText =
-cherry > 0 ? "1/" + (game/cherry).toFixed(1) : "1/-";
-
-localStorage.setItem("game", game);
-localStorage.setItem("grape", grape);
-localStorage.setItem("cherry", cherry);
-localStorage.setItem("bell", bell);
-localStorage.setItem("missBell", missBell);
-localStorage.setItem("pierrot", pierrot);
-localStorage.setItem("missPierrot", missPierrot);
-localStorage.setItem("soloBig", soloBig);
-localStorage.setItem("cherryBig", cherryBig);
-localStorage.setItem("soloReg", soloReg);
-localStorage.setItem("cherryReg", cherryReg);
-document.getElementById("battleToggle").innerText =
-battleMode ?
-"設定6バトル ON" :
-"設定6バトル OFF";
-
-localStorage.setItem(
-"battleMode",
-battleMode
-);
-}
-
-
-document.addEventListener("input", ()=>{
-game = Number(gameInput()) || 0;
+keys.forEach(k=>{
+document.getElementById(k).value = state[k];
 });
 
-function gameInput(){
-return document.getElementById("game").value;
+document.getElementById("grapeRate").innerText =
+state.grape>0 ? "1/" + (state.game/state.grape).toFixed(1) : "1/-";
+
+document.getElementById("cherryRate").innerText =
+state.cherry>0 ? "1/" + (state.game/state.cherry).toFixed(1) : "1/-";
+
+document.getElementById("battleToggle").innerText =
+state.battleMode ? "設定6バトル ON" : "設定6バトル OFF";
+
+save();
 }
 
-function addGame(){ game++; update(); flashInput("game","flash-green"); }
-function subGame(){ if(game>0) game--; update(); flashInput("game","flash-red"); }
+function add(key){
+state[key]++;
+flash(key,"flash-green");
+battleCheck();
+update();
+}
 
-function addGrape(){ grape++; update(); flashInput("grape","flash-green"); battleCheck(); }
-function subGrape(){ if(grape>0) grape--; update(); flashInput("grape","flash-red"); }
-
-function addCherry(){ cherry++; update(); flashInput("cherry","flash-green"); battleCheck(); }
-function subCherry(){ if(cherry>0) cherry--; update(); flashInput("cherry","flash-red"); }
-
-function addBell(){ bell++; update(); flashInput("bell","flash-green"); battleCheck(); }
-function subBell(){ if(bell>0) bell--; update(); flashInput("bell","flash-red"); }
-
-function addMissBell(){ missBell++; update(); flashInput("missBell","flash-green"); battleCheck(); }
-function subMissBell(){ if(missBell>0) missBell--; update(); flashInput("missBell","flash-red"); }
-
-function addPierrot(){ pierrot++; update(); flashInput("pierrot","flash-green"); battleCheck(); }
-function subPierrot(){ if(pierrot>0) pierrot--; update(); flashInput("pierrot","flash-red"); }
-
-function addMissPierrot(){ missPierrot++; update(); flashInput("missPierrot","flash-green"); battleCheck(); }
-function subMissPierrot(){ if(missPierrot>0) missPierrot--; update(); flashInput("missPierrot","flash-red"); }
-
-function addSoloBig(){ soloBig++; update(); flashInput("soloBig","flash-green"); battleCheck(); }
-function subSoloBig(){ if(soloBig>0) soloBig--; update(); flashInput("soloBig","flash-red"); }
-
-function addCherryBig(){ cherryBig++; update(); flashInput("cherryBig","flash-green"); battleCheck(); }
-function subCherryBig(){ if(cherryBig>0) cherryBig--; update(); flashInput("cherryBig","flash-red"); }
-
-function addSoloReg(){ soloReg++; update(); flashInput("soloReg","flash-green"); battleCheck(); }
-function subSoloReg(){ if(soloReg>0) soloReg--; update(); flashInput("soloReg","flash-red"); }
-
-function addCherryReg(){ cherryReg++; update(); flashInput("cherryReg","flash-green"); battleCheck(); }
-function subCherryReg(){ if(cherryReg>0) cherryReg--; update(); flashInput("cherryReg","flash-red"); }
+function sub(key){
+if(state[key]>0) state[key]--;
+flash(key,"flash-red");
+update();
+}
 
 function resetAll(){
-game=0;
-grape=0;
-cherry=0;
-bell=0;
-missBell=0;
-pierrot=0;
-missPierrot=0;
-soloBig=0;
-cherryBig=0;
-soloReg=0;
-cherryReg=0;
+keys.forEach(k=>state[k]=0);
 update();
 }
 
+function toggleBattle(){
+state.battleMode = !state.battleMode;
 update();
+}
 
+function battleCheck(){
+if(!state.battleMode) return;
+if(Math.floor(Math.random()*119)===0){
+const lamp=document.getElementById("battleLamp");
+lamp.classList.add("on");
+setTimeout(()=>lamp.classList.remove("on"),1000);
+}
+}
+
+update();
 </script>
 
 </body>
