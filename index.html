@@ -71,27 +71,6 @@ button{
 .flash-green{ box-shadow:0 0 0 3px #00ff00; }
 .flash-red{ box-shadow:0 0 0 3px #ff0000; }
 
-#battleLamp{
-    position:fixed;
-    top:10px;
-    right:10px;
-    width:24px;
-    height:24px;
-    border-radius:50%;
-    background:#ccc;
-    border:2px solid #888;
-}
-
-#battleLamp.on{
-    background:#ffeb3b;
-    box-shadow:0 0 20px #ffeb3b;
-}
-
-#battleToggle{
-    width:100%;
-    height:40px;
-    margin-bottom:10px;
-}
 </style>
 </head>
 
@@ -99,8 +78,6 @@ button{
 
 <h1>小役カウンター</h1>
 
-<div id="battleLamp"></div>
-<button id="battleToggle" onclick="toggleBattle()">設定6バトル OFF</button>
 
 <div class="container">
 
@@ -180,21 +157,18 @@ const keys = [
 let state = {
 game:0, grape:0, cherry:0,
 bell:0, missBell:0, pierrot:0, missPierrot:0,
-soloBig:0, cherryBig:0, soloReg:0, cherryReg:0,
-battleMode:false
+soloBig:0, cherryBig:0, soloReg:0, cherryReg:0
 };
 
 // load
 keys.forEach(k=>{
 state[k] = Number(localStorage.getItem(k)) || 0;
 });
-state.battleMode = localStorage.getItem("battleMode") === "true";
 
 function save(){
 keys.forEach(k=>{
 localStorage.setItem(k,state[k]);
 });
-localStorage.setItem("battleMode",state.battleMode);
 }
 
 function flash(id,type){
@@ -215,16 +189,12 @@ state.grape>0 ? "1/" + (state.game/state.grape).toFixed(1) : "1/-";
 document.getElementById("cherryRate").innerText =
 state.cherry>0 ? "1/" + (state.game/state.cherry).toFixed(1) : "1/-";
 
-document.getElementById("battleToggle").innerText =
-state.battleMode ? "設定6バトル ON" : "設定6バトル OFF";
-
 save();
 }
 
 function add(key){
 state[key]++;
 flash(key,"flash-green");
-battleCheck();
 update();
 }
 
@@ -239,19 +209,6 @@ keys.forEach(k=>state[k]=0);
 update();
 }
 
-function toggleBattle(){
-state.battleMode = !state.battleMode;
-update();
-}
-
-function battleCheck(){
-if(!state.battleMode) return;
-if(Math.floor(Math.random()*119)===0){
-const lamp=document.getElementById("battleLamp");
-lamp.classList.add("on");
-setTimeout(()=>lamp.classList.remove("on"),1000);
-}
-}
 
 update();
 </script>
