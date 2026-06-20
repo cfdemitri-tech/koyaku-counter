@@ -70,14 +70,12 @@ button{
 
 .flash-green{ box-shadow:0 0 0 3px #00ff00; }
 .flash-red{ box-shadow:0 0 0 3px #ff0000; }
-
 </style>
 </head>
 
 <body>
 
 <h1>小役カウンター</h1>
-
 
 <div class="container">
 
@@ -102,6 +100,24 @@ button{
 <button onclick="add('cherry')">+</button>
 <button onclick="sub('cherry')">-</button>
 <div id="cherryRate" class="rate">1/-</div>
+</div>
+
+<div class="row">
+<div class="label">BIG合計</div>
+<div id="bigTotal" class="value">0</div>
+<div id="bigRate" class="rate">1/-</div>
+</div>
+
+<div class="row">
+<div class="label">REG合計</div>
+<div id="regTotal" class="value">0</div>
+<div id="regRate" class="rate">1/-</div>
+</div>
+
+<div class="row">
+<div class="label">ボナ合算</div>
+<div id="bonusTotal" class="value">0</div>
+<div id="bonusRate" class="rate">1/-</div>
 </div>
 
 <div class="row"><div class="label">ベル</div>
@@ -160,55 +176,66 @@ bell:0, missBell:0, pierrot:0, missPierrot:0,
 soloBig:0, cherryBig:0, soloReg:0, cherryReg:0
 };
 
-// load
 keys.forEach(k=>{
-state[k] = Number(localStorage.getItem(k)) || 0;
+    state[k] = Number(localStorage.getItem(k)) || 0;
 });
 
 function save(){
-keys.forEach(k=>{
-localStorage.setItem(k,state[k]);
-});
+    keys.forEach(k=>{
+        localStorage.setItem(k,state[k]);
+    });
 }
 
 function flash(id,type){
-const el=document.getElementById(id);
-el.classList.add(type);
-setTimeout(()=>el.classList.remove(type),300);
+    const el=document.getElementById(id);
+    el.classList.add(type);
+    setTimeout(()=>el.classList.remove(type),300);
+}
+
+function calcRate(count){
+    return count > 0 ? "1/" + (state.game / count).toFixed(1) : "1/-";
 }
 
 function update(){
 
-keys.forEach(k=>{
-document.getElementById(k).value = state[k];
-});
+    keys.forEach(k=>{
+        document.getElementById(k).value = state[k];
+    });
 
-document.getElementById("grapeRate").innerText =
-state.grape>0 ? "1/" + (state.game/state.grape).toFixed(1) : "1/-";
+    document.getElementById("grapeRate").innerText = calcRate(state.grape);
+    document.getElementById("cherryRate").innerText = calcRate(state.cherry);
 
-document.getElementById("cherryRate").innerText =
-state.cherry>0 ? "1/" + (state.game/state.cherry).toFixed(1) : "1/-";
+    const bigTotal = state.soloBig + state.cherryBig;
+    const regTotal = state.soloReg + state.cherryReg;
+    const bonusTotal = bigTotal + regTotal;
 
-save();
+    document.getElementById("bigTotal").innerText = bigTotal;
+    document.getElementById("regTotal").innerText = regTotal;
+    document.getElementById("bonusTotal").innerText = bonusTotal;
+
+    document.getElementById("bigRate").innerText = calcRate(bigTotal);
+    document.getElementById("regRate").innerText = calcRate(regTotal);
+    document.getElementById("bonusRate").innerText = calcRate(bonusTotal);
+
+    save();
 }
 
 function add(key){
-state[key]++;
-flash(key,"flash-green");
-update();
+    state[key]++;
+    flash(key,"flash-green");
+    update();
 }
 
 function sub(key){
-if(state[key]>0) state[key]--;
-flash(key,"flash-red");
-update();
+    if(state[key]>0) state[key]--;
+    flash(key,"flash-red");
+    update();
 }
 
 function resetAll(){
-keys.forEach(k=>state[k]=0);
-update();
+    keys.forEach(k=>state[k]=0);
+    update();
 }
-
 
 update();
 </script>
